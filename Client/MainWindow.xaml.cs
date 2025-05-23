@@ -55,7 +55,7 @@ namespace ChatClient
                 message.IsMine = isMine;
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    AddMessageWithTimeLabel(message);
+                    Messages.Add(message);
                     // 滚动到底部显示最新消息
                     MessagesScrollViewer.ScrollToEnd();
                 });
@@ -85,21 +85,6 @@ namespace ChatClient
             }
             // 滚动到底部
             MessagesScrollViewer.ScrollToEnd();
-        }
-        private void AddMessageWithTimeLabel(ChatMessage message)
-        {
-            // 获取最后一条非时间标签消息
-            var lastMsg = Messages.LastOrDefault(m => !m.IsTimeLabel);
-            if (lastMsg != null && (message.Timestamp - lastMsg.Timestamp).TotalMinutes >= 2)
-            {
-                // 插入时间标签
-                Messages.Add(new ChatMessage
-                {
-                    IsTimeLabel = true,
-                    TimeLabelText = message.Timestamp.ToString("yyyy-MM-dd HH:mm")
-                });
-            }
-            Messages.Add(message);
         }
 
         // 发送消息
